@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Timer online</title>
+</head>
+
+<body>
+    <header>
+        <h1>Timer online</h1>
+    </header>
+
+    <div class="input-date">
+        <div class="input"> Дни
+            <input class="days" type="text">
+        </div>
+        <div class="input">Часы
+            <input  class="hours" type="text">
+        </div>
+        <div class="input">Минуты
+            <input class="minutes" type="text">
+        </div>
+        <div class="input">Секунды
+            <input class="seconds" type="text">
+        </div>
+        <button>Запустить</button>       
+    </div>
+
+    <div class="timer">
+        <div class="title">Таймер сработает через </div>
+        <div class="timer">
+            <div class="timer__block">
+                <p id="days">00</p>
+                дней
+            </div>
+            <div class="timer__block">
+                <p id="hours">00</p>
+                часов
+            </div>
+            <div class="timer__block">
+                <p id="minutes">00</p>
+                минут
+            </div>
+            <div class="timer__block">
+                <p id="seconds">00</p>
+                секунд
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© Maximus, 2020г.
+            <a href="https://vk.com" target="_blank">VK</a>
+            <a href="https://facebook.com" target="_blank">fb</a>
+        </p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
