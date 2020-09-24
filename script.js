@@ -2,14 +2,32 @@
 
 window.addEventListener('DOMContentLoaded', () => {
 
-    const input = document.querySelector('.date'),
-          btn = document.querySelector('button');        
-   
-          btn.addEventListener('click', () => {
-            let inputDate =  Date.parse(new Date()) + 50 * 1000 * 60;              
-            // console.log(input.value);  
-            setTimer('.timer', inputDate);           
-          })   
+    const inputDay = document.querySelector('.days'),
+        inputHours = document.querySelector('.hours'),
+        inputMinutes = document.querySelector('.minutes'),
+        inputSeconds = document.querySelector('.seconds'),
+        btn = document.querySelector('button');
+
+    btn.addEventListener('click', () => {
+        let sum = GetSumInput();
+        let inputDate = Date.parse(new Date()) + sum;
+        if (sum < 1000) {
+            inputDate = Date.parse(new Date()) + 1000 * 60;
+            setTimer('.timer', inputDate);
+            setTimeout(alert('Таймер запущен на 1 минуту.'), 1000);
+        } else {
+            setTimer('.timer', inputDate);
+        }
+    })
+
+    let GetSumInput = function () {
+        let d = inputDay.value * 24 * 60 * 60 * 1000;
+        let h = inputHours.value * 60 * 60 * 1000;
+        let m = inputMinutes.value * 60 * 1000;
+        let s = inputSeconds.value * 1000;
+        let sumInput = d + h + m + s;
+        return sumInput;
+    }
 
     function getTime(inputDate) {
         const t = inputDate - Date.parse(new Date()),
@@ -51,10 +69,11 @@ window.addEventListener('DOMContentLoaded', () => {
             hours.innerHTML = getZero(t.hours);
             minutes.innerHTML = getZero(t.minutes);
             seconds.innerHTML = getZero(t.seconds);
-            
+
             if (t.total <= 0) {
+                console.log(t.total);
                 clearInterval(timeInterval);
-                alert('Таймер сработал!');               
+                alert('Время истекло');
             }
         }
     }
