@@ -6,7 +6,9 @@ window.addEventListener('DOMContentLoaded', () => {
         inputHours = document.querySelector('.hours'),
         inputMinutes = document.querySelector('.minutes'),
         inputSeconds = document.querySelector('.seconds'),
-        btn = document.querySelector('button');
+        btn = document.querySelector('button'),
+        btnStop = document.querySelector('button-stop'), //stop button
+        soundFinish = document.querySelector('.sound-finish');
 
     btn.addEventListener('click', () => {
         let sum = GetSumInput();
@@ -19,6 +21,10 @@ window.addEventListener('DOMContentLoaded', () => {
             setTimer('.timer', inputDate);
         }
     })
+
+    let stopTimer =  function() {//stop button
+
+    }
 
     let GetSumInput = function () {
         let d = inputDay.value * 24 * 60 * 60 * 1000;
@@ -73,7 +79,10 @@ window.addEventListener('DOMContentLoaded', () => {
             if (t.total <= 0) {
                 console.log(t.total);
                 clearInterval(timeInterval);
-                alert('Время истекло');
+                // alert('Время истекло');
+                soundFinish.play();
+                soundFinish.volume = 0.15;
+
             }
         }
     }
