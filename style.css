@@ -43,7 +43,7 @@ span {
     font-size: 20px;
 }
 button {
-    width: 120px;
+    width: 70px;
     height: 70px;
     background-image: linear-gradient(
                         to top, #0029df 30px, #7e9ffb 60px);   
@@ -52,7 +52,7 @@ button {
     color: #ddd; 
     font-size: 20px;
     font-weight: bold;
-    margin-left: 30px;
+    margin-left: 20px;
     display: inline-block;    
 }
 button:hover {
@@ -60,10 +60,15 @@ button:hover {
     background-image: linear-gradient(
                         to top, #798bdc 30px, #d9deee 60px);
 }
-button: {
-    color: rgb(231, 22, 22);
+button {
+    color: rgb(0, 16, 235);
     background-image: linear-gradient(
                         to top, #798bdc 30px, #d9deee 60px);
+}
+#stop {
+    background-image: linear-gradient(
+                        to top, #dc79a4 30px, #eed9e2 60px);
+    color: rgb(170, 0, 0);
 }
 .title {
     padding: 20px;
