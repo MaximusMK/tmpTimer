@@ -9,24 +9,31 @@ window.addEventListener('DOMContentLoaded', () => {
         btnStart = document.querySelector('#start'),
         btnStop = document.querySelector('#stop'),
         soundFinish = document.querySelector('.sound-finish');
-        let stopPressed = false;
-        console.log(stopPressed);
+        let stopPressed = false,
+            startPressed = false;
+        console.log('stopPressed=' + stopPressed);
 
-    btnStart.addEventListener('click', () => {
+    btnStart.addEventListener('click', () => {        
+        console.log('startPressed=' + startPressed);
         let sum = GetSumInput();
         let inputTime = Date.parse(new Date()) + sum;
 
         if (sum <= 0) {
-            inputTime = Date.parse(new Date()) + 5 * 1000; //вернуть 60 после отладки
+            inputTime = Date.parse(new Date()) + 30 * 1000; //вернуть 60 после отладки
             setTimer('.timer', inputTime);
+            // startPressed = true;
+            console.log('startPressed=' +startPressed);
             // alert('Таймер запущен на 1 минуту.'); // 1) срабатывает перед запуском
         } else {
             setTimer('.timer', inputTime);
+            // startPressed = true;
+            console.log('startPressed=' +startPressed);
         }
     })
 
     btnStop.addEventListener('click', () => {
         stopPressed = true;
+        console.log('stopPressed=' + stopPressed);
     });
 
     function GetSumInput() {
@@ -38,7 +45,7 @@ window.addEventListener('DOMContentLoaded', () => {
         return sumInput;
     }
 
-    function setTimer(selector, inputDate) {        
+    function setTimer(selector, inputDate) {    
         const timer = document.querySelector(selector),
             days = timer.querySelector('#days'),
             hours = timer.querySelector('#hours'),
@@ -47,6 +54,8 @@ window.addEventListener('DOMContentLoaded', () => {
             timeInterval = setInterval(updateTimer, 1000);
 
         updateTimer();
+        // startPressed = true;              
+
 
         function updateTimer() {           
                 const t = getTime(inputDate);
@@ -54,7 +63,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 hours.innerHTML = getZero(t.hours);
                 minutes.innerHTML = getZero(t.minutes);
                 seconds.innerHTML = getZero(t.seconds);
-                console.log('running');
 
                 if (t.total <= 0) {
                     clearInterval(timeInterval);
@@ -66,7 +74,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
     function getTime(inputDate) {
-        if (stopPressed == true) {
+        if (stopPressed || startPressed) {
             inputDate = Date.parse(new Date()); 
             const t = inputDate - Date.parse(new Date()),
             days = Math.floor(t / (1000 * 60 * 60 * 24)),
@@ -74,8 +82,7 @@ window.addEventListener('DOMContentLoaded', () => {
             minutes = Math.floor((t / (1000 * 60) % 60)),
             seconds = Math.floor((t / 1000 % 60)); 
             stopPressed = false;
-            console.log(stopPressed);
-            console.log('t with true');
+            running = false;
 
             return {
                 'total': t,
@@ -90,7 +97,6 @@ window.addEventListener('DOMContentLoaded', () => {
             hours = Math.floor((t / (1000 * 60 * 60) % 24)),
             minutes = Math.floor((t / (1000 * 60) % 60)),
             seconds = Math.floor((t / 1000 % 60)); 
-            console.log('t with false');
 
             return {
                 'total': t,
