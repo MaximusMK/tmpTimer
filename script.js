@@ -9,25 +9,25 @@ window.addEventListener('DOMContentLoaded', () => {
         btnStart = document.querySelector('#start'),
         btnStop = document.querySelector('#stop'),
         soundFinish = document.querySelector('.sound-finish');
-        let stopPressed = false,
-            startPressed = false;
-        console.log('stopPressed=' + stopPressed);
+    let inputTime,
+        startPressed = false,
+        stopPressed = false;
+    // console.log('stopPressed=' + stopPressed);
 
-    btnStart.addEventListener('click', () => {        
+    btnStart.addEventListener('click', () => {
+        startPressed = true;
         console.log('startPressed=' + startPressed);
-        let sum = GetSumInput();
-        let inputTime = Date.parse(new Date()) + sum;
+        let sum = getSumInput();
 
         if (sum <= 0) {
             inputTime = Date.parse(new Date()) + 30 * 1000; //вернуть 60 после отладки
             setTimer('.timer', inputTime);
-            // startPressed = true;
-            console.log('startPressed=' +startPressed);
+            console.log('startPressed=' + startPressed);
             // alert('Таймер запущен на 1 минуту.'); // 1) срабатывает перед запуском
         } else {
+            inputTime = Date.parse(new Date()) + sum;
             setTimer('.timer', inputTime);
-            // startPressed = true;
-            console.log('startPressed=' +startPressed);
+            console.log('startPressed=' + startPressed);
         }
     })
 
@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded', () => {
         console.log('stopPressed=' + stopPressed);
     });
 
-    function GetSumInput() {
+    function getSumInput() {
         let d = inputDay.value * 24 * 60 * 60 * 1000;
         let h = inputHours.value * 60 * 60 * 1000;
         let m = inputMinutes.value * 60 * 1000;
@@ -45,7 +45,7 @@ window.addEventListener('DOMContentLoaded', () => {
         return sumInput;
     }
 
-    function setTimer(selector, inputDate) {    
+    function setTimer(selector, inputDate) {
         const timer = document.querySelector(selector),
             days = timer.querySelector('#days'),
             hours = timer.querySelector('#hours'),
@@ -54,36 +54,32 @@ window.addEventListener('DOMContentLoaded', () => {
             timeInterval = setInterval(updateTimer, 1000);
 
         updateTimer();
-        // startPressed = true;              
 
+        function updateTimer() {
+            const t = getTime(inputDate);
+            days.innerHTML = getZero(t.days);
+            hours.innerHTML = getZero(t.hours);
+            minutes.innerHTML = getZero(t.minutes);
+            seconds.innerHTML = getZero(t.seconds);
 
-        function updateTimer() {           
-                const t = getTime(inputDate);
-                days.innerHTML = getZero(t.days);
-                hours.innerHTML = getZero(t.hours);
-                minutes.innerHTML = getZero(t.minutes);
-                seconds.innerHTML = getZero(t.seconds);
-
-                if (t.total <= 0) {
-                    clearInterval(timeInterval);
-                    // alert('Время истекло'); // 2) срабатывает за 1 секунду до конца
-                    soundFinish.play();
-                    soundFinish.volume = 0.8;
-                }
+            if (t.total <= 0) {
+                clearInterval(timeInterval);
+                // alert('Время истекло'); // 2) срабатывает за 1 секунду до конца
+                soundFinish.play();
+                soundFinish.volume = 0.8;
             }
         }
+    }
 
     function getTime(inputDate) {
-        if (stopPressed || startPressed) {
-            inputDate = Date.parse(new Date()); 
-            const t = inputDate - Date.parse(new Date()),
-            days = Math.floor(t / (1000 * 60 * 60 * 24)),
-            hours = Math.floor((t / (1000 * 60 * 60) % 24)),
-            minutes = Math.floor((t / (1000 * 60) % 60)),
-            seconds = Math.floor((t / 1000 % 60)); 
-            stopPressed = false;
-            running = false;
-
+        if (startPressed && !stopPressed) {
+            inputDate = Date.parse(new Date());
+            const t = inputTime - Date.parse(new Date()),
+                days = Math.floor(t / (1000 * 60 * 60 * 24)),
+                hours = Math.floor((t / (1000 * 60 * 60) % 24)),
+                minutes = Math.floor((t / (1000 * 60) % 60)),
+                seconds = Math.floor((t / 1000 % 60));
+           
             return {
                 'total': t,
                 'days': days,
@@ -92,20 +88,25 @@ window.addEventListener('DOMContentLoaded', () => {
                 'seconds': seconds,
             };
         } else {
-            const t = inputDate - Date.parse(new Date()),
-            days = Math.floor(t / (1000 * 60 * 60 * 24)),
-            hours = Math.floor((t / (1000 * 60 * 60) % 24)),
-            minutes = Math.floor((t / (1000 * 60) % 60)),
-            seconds = Math.floor((t / 1000 % 60)); 
+            if (startPressed && stopPressed) {
+                const t = 0,
+                    days = Math.floor(t / (1000 * 60 * 60 * 24)),
+                    hours = Math.floor((t / (1000 * 60 * 60) % 24)),
+                    minutes = Math.floor((t / (1000 * 60) % 60)),
+                    seconds = Math.floor((t / 1000 % 60));
+                    startPressed = false;
+                    stopPressed = false;
 
-            return {
-                'total': t,
-                'days': days,
-                'hours': hours,
-                'minutes': minutes,
-                'seconds': seconds,
-            };
-        }      
+                return {
+                    'total': t,
+                    'days': days,
+                    'hours': hours,
+                    'minutes': minutes,
+                    'seconds': seconds,
+                };
+            }
+
+        }
     }
 
     function getZero(num) {
